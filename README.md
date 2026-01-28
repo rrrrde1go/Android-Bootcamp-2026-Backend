@@ -122,3 +122,9 @@
 7. ### Реализовать работу с базой данных
   * **Использовать Spring Data JPA**
   * **Настроить миграции базы данных с помощью Liquibase**
+
+  ## 7. Проектирование базы данных
+
+  <img width="871" height="605" alt="image" src="https://github.com/user-attachments/assets/f3a848c6-7d2a-460b-a9b4-917d9c8d607d" />
+
+  ## 
