@@ -1,13 +1,13 @@
 package ru.sicampus.bootcamp2026.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.dto.MeetingDTO;
 import ru.sicampus.bootcamp2026.service.MeetingService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/meetings")
@@ -17,8 +17,8 @@ public class MeetingController {
     private final MeetingService meetingService;
 
     @GetMapping
-    public ResponseEntity<List<MeetingDTO>> getAll() {
-        return ResponseEntity.ok(meetingService.getAllMeetings());
+    public ResponseEntity<Page<MeetingDTO>> getAll(Pageable pageable) {
+        return ResponseEntity.ok(meetingService.getAllMeetings(pageable));
     }
 
     @GetMapping("/{id}")

@@ -1,6 +1,8 @@
 package ru.sicampus.bootcamp2026.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.dto.UserDTO;
@@ -11,8 +13,6 @@ import ru.sicampus.bootcamp2026.service.UserService;
 import ru.sicampus.bootcamp2026.util.UserMapper;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,10 +22,9 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public List<UserDTO> getAllUsers() {
-        return userRepository.findAll().stream()
-                .map(UserMapper::convertToDto)
-                .collect(Collectors.toList());
+    public Page<UserDTO> getAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable)
+                .map(UserMapper::convertToDto);
     }
 
     @Override
@@ -36,13 +35,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO createUser(UserDTO dto) {
+    public UserDTO createUser(UserRegistrationDTO dto) {
         User user = new User();
         user.setEmail(dto.getEmail());
+        user.setPasswordHash(passwordEncoder.encode(dto.getPassword()));
         user.setFullName(dto.getFullName());
-        user.setPfpUrl(dto.getPfpUrl());
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
+
         return UserMapper.convertToDto(userRepository.save(user));
     }
 
@@ -50,8 +50,10 @@ public class UserServiceImpl implements UserService {
     public UserDTO updateUser(Long id, UserDTO dto) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+        if (dto.getPasswordHash() != null && !dto.getPasswordHash().isBlank()) {
+            user.setPasswordHash(passwordEncoder.encode(dto.getPasswordHash()));
+        }
         user.setFullName(dto.getFullName());
-        user.setPfpUrl(dto.getPfpUrl());
         user.setUpdatedAt(LocalDateTime.now());
         return UserMapper.convertToDto(userRepository.save(user));
     }
@@ -59,16 +61,5 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
-    }
-
-    @Override
-    public UserDTO registerUser(UserRegistrationDTO dto) {
-        User user = new User();
-        user.setEmail(dto.getEmail());
-        user.setPasswordHash(passwordEncoder.encode(dto.getPassword()));
-        user.setFullName(dto.getFullName());
-        user.setCreatedAt(LocalDateTime.now());
-        user.setUpdatedAt(LocalDateTime.now());
-        return UserMapper.convertToDto(userRepository.save(user));
     }
 }
