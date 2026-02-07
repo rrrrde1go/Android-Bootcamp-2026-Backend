@@ -7,8 +7,10 @@ import ru.sicampus.bootcamp2026.dto.UserRegistrationDTO;
 
 public interface UserService {
     Page<UserDTO> getAllUsers(Pageable pageable);
+    Page<UserDTO> searchUsers(String query, Pageable pageable);
     UserDTO getUserById(Long id);
     UserDTO createUser(UserRegistrationDTO dto);
     UserDTO updateUser(Long id, UserDTO dto);
+    UserDTO getUserByEmail(String email);
     void deleteUser(Long id);
 }

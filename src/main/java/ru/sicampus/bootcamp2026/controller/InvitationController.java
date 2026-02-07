@@ -6,8 +6,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 import ru.sicampus.bootcamp2026.dto.InvitationDTO;
+import ru.sicampus.bootcamp2026.dto.UserDTO;
 import ru.sicampus.bootcamp2026.service.InvitationService;
+import ru.sicampus.bootcamp2026.service.UserService;
 
 @RestController
 @RequestMapping("/api/invitations")
@@ -15,10 +18,17 @@ import ru.sicampus.bootcamp2026.service.InvitationService;
 public class InvitationController {
 
     private final InvitationService invitationService;
+    private final UserService userService;
 
     @GetMapping
     public ResponseEntity<Page<InvitationDTO>> getAll(Pageable pageable) {
         return ResponseEntity.ok(invitationService.getAllInvitations(pageable));
+    }
+
+    @GetMapping("/my")
+    public ResponseEntity<Page<InvitationDTO>> getMyInvitations(Authentication authentication, Pageable pageable) {
+        UserDTO user = userService.getUserByEmail(authentication.getName());
+        return ResponseEntity.ok(invitationService.getInvitationsByInvitee(user.getId(), pageable));
     }
 
     @GetMapping("/{id}")

@@ -29,6 +29,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Page<UserDTO> searchUsers(String query, Pageable pageable) {
+        return userRepository.findByFullNameContainingIgnoreCase(query, pageable)
+                .map(UserMapper::convertToDto);
+    }
+
+    @Override
     public UserDTO getUserById(Long id) {
         return userRepository.findById(id)
                 .map(UserMapper::convertToDto)
@@ -51,12 +57,16 @@ public class UserServiceImpl implements UserService {
     public UserDTO updateUser(Long id, UserDTO dto) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
-        if (dto.getPasswordHash() != null && !dto.getPasswordHash().isBlank()) {
-            user.setPasswordHash(passwordEncoder.encode(dto.getPasswordHash()));
-        }
         user.setFullName(dto.getFullName());
         user.setUpdatedAt(LocalDateTime.now());
         return UserMapper.convertToDto(userRepository.save(user));
+    }
+
+    @Override
+    public UserDTO getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .map(UserMapper::convertToDto)
+                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
     }
 
     @Override
