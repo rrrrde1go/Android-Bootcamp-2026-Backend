@@ -29,6 +29,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Page<UserDTO> searchUsers(String query, Pageable pageable) {
+        return userRepository.findByFullNameContainingIgnoreCase(query, pageable)
+                .map(UserMapper::convertToDto);
+    }
+
+    @Override
     public UserDTO getUserById(Long id) {
         return userRepository.findById(id)
                 .map(UserMapper::convertToDto)
@@ -54,6 +60,13 @@ public class UserServiceImpl implements UserService {
         user.setFullName(dto.getFullName());
         user.setUpdatedAt(LocalDateTime.now());
         return UserMapper.convertToDto(userRepository.save(user));
+    }
+
+    @Override
+    public UserDTO getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .map(UserMapper::convertToDto)
+                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
     }
 
     @Override

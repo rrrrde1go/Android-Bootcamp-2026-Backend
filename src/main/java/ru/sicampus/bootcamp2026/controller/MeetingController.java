@@ -6,8 +6,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 import ru.sicampus.bootcamp2026.dto.MeetingDTO;
+import ru.sicampus.bootcamp2026.dto.UserDTO;
 import ru.sicampus.bootcamp2026.service.MeetingService;
+import ru.sicampus.bootcamp2026.service.UserService;
 
 @RestController
 @RequestMapping("/api/meetings")
@@ -15,10 +18,17 @@ import ru.sicampus.bootcamp2026.service.MeetingService;
 public class MeetingController {
 
     private final MeetingService meetingService;
+    private final UserService userService;
 
     @GetMapping
     public ResponseEntity<Page<MeetingDTO>> getAll(Pageable pageable) {
         return ResponseEntity.ok(meetingService.getAllMeetings(pageable));
+    }
+
+    @GetMapping("/my")
+    public ResponseEntity<Page<MeetingDTO>> getMyMeetings(Authentication authentication, Pageable pageable) {
+        UserDTO user = userService.getUserByEmail(authentication.getName());
+        return ResponseEntity.ok(meetingService.getMeetingsByOrganizer(user.getId(), pageable));
     }
 
     @GetMapping("/{id}")

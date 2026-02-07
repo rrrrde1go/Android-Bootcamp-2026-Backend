@@ -11,5 +11,6 @@ public interface InvitationService {
     InvitationDTO getInvitationById(Long id);
     InvitationDTO createInvitation(InvitationDTO dto);
     InvitationDTO updateInvitation(Long id, InvitationDTO dto);
+    Page<InvitationDTO> getInvitationsByInvitee(Long inviteeId, Pageable pageable);
     void deleteInvitation(Long id);
 }
