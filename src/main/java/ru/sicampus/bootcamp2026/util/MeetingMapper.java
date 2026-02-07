@@ -4,6 +4,8 @@ import lombok.experimental.UtilityClass;
 import ru.sicampus.bootcamp2026.dto.MeetingDTO;
 import ru.sicampus.bootcamp2026.entity.Meeting;
 
+import java.time.LocalDate;
+
 @UtilityClass
 public class MeetingMapper {
     public MeetingDTO convertToDto(Meeting meeting) {

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.dto.UserDTO;
 import ru.sicampus.bootcamp2026.dto.UserRegistrationDTO;
 import ru.sicampus.bootcamp2026.entity.User;
+import ru.sicampus.bootcamp2026.exception.UserNotFoundException;
 import ru.sicampus.bootcamp2026.repository.UserRepository;
 import ru.sicampus.bootcamp2026.service.UserService;
 import ru.sicampus.bootcamp2026.util.UserMapper;
@@ -31,7 +32,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO getUserById(Long id) {
         return userRepository.findById(id)
                 .map(UserMapper::convertToDto)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 
     @Override
@@ -49,7 +50,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO updateUser(Long id, UserDTO dto) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
         if (dto.getPasswordHash() != null && !dto.getPasswordHash().isBlank()) {
             user.setPasswordHash(passwordEncoder.encode(dto.getPasswordHash()));
         }
