@@ -1,4 +1,5 @@
 email;password_hash;full_name;pfp_url;created_at;updated_at
+
 user1@test.ru;$2a$12$SZDuPPZsSibvfYS.G/e1Su5s9X94XgAGvC7Y2NmAsSLEwbSnNj9dK;Иванов Иван Иванович;https://example.com/avatars/1.png;2024-01-01 10:00:00;2024-01-01 10:00:00
 user2@test.ru;$2a$12$SZDuPPZsSibvfYS.G/e1Su5s9X94XgAGvC7Y2NmAsSLEwbSnNj9dK;Петров Пётр Петрович;https://example.com/avatars/2.png;2024-01-02 10:00:00;2024-01-02 10:00:00
 user3@test.ru;$2a$12$SZDuPPZsSibvfYS.G/e1Su5s9X94XgAGvC7Y2NmAsSLEwbSnNj9dK;Сергеев Сергей Сергеевич;https://example.com/avatars/3.png;2024-01-03 10:00:00;2024-01-03 10:00:00
