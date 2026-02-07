@@ -67,6 +67,12 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
+    public Page<MeetingDTO> getMeetingsByOrganizer(Long organizerId, Pageable pageable) {
+        return meetingRepository.findByOrganizerId(organizerId, pageable)
+                .map(MeetingMapper::convertToDto);
+    }
+
+    @Override
     public void deleteMeeting(Long id) {
         meetingRepository.deleteById(id);
     }

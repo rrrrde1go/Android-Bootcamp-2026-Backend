@@ -76,6 +76,12 @@ public class InvitationServiceImpl implements InvitationService {
     }
 
     @Override
+    public Page<InvitationDTO> getInvitationsByInvitee(Long inviteeId, Pageable pageable) {
+        return invitationRepository.findByInviteeId(inviteeId, pageable)
+                .map(InvitationMapper::convertToDto);
+    }
+
+    @Override
     public void deleteInvitation(Long id) {
         invitationRepository.deleteById(id);
     }
