@@ -51,9 +51,6 @@ public class UserServiceImpl implements UserService {
     public UserDTO updateUser(Long id, UserDTO dto) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
-        if (dto.getPasswordHash() != null && !dto.getPasswordHash().isBlank()) {
-            user.setPasswordHash(passwordEncoder.encode(dto.getPasswordHash()));
-        }
         user.setFullName(dto.getFullName());
         user.setUpdatedAt(LocalDateTime.now());
         return UserMapper.convertToDto(userRepository.save(user));
