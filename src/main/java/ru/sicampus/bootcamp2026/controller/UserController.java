@@ -45,6 +45,7 @@ public class UserController {
         String email = authentication.getName();
         UserDTO currentUser = userService.getUserByEmail(email);
         return ResponseEntity.ok(userService.updateUser(currentUser.getId(), dto));
+
     }
 
     @PostMapping("/register")
