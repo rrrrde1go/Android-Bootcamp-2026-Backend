@@ -3,7 +3,6 @@ package ru.sicampus.bootcamp2026.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-//import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.List;

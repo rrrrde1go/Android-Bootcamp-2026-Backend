@@ -3,7 +3,6 @@ package ru.sicampus.bootcamp2026.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +11,6 @@ import org.springframework.security.core.Authentication;
 import ru.sicampus.bootcamp2026.dto.UserDTO;
 import ru.sicampus.bootcamp2026.dto.UserRegistrationDTO;
 import ru.sicampus.bootcamp2026.service.UserService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -52,6 +49,10 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<UserDTO> register(@RequestBody UserRegistrationDTO dto) {
+        if (dto.getPassword() == null || dto.getPassword().length() < 8) {
+            return ResponseEntity.badRequest().build();
+        }
+
         UserDTO createdUser = userService.createUser(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
